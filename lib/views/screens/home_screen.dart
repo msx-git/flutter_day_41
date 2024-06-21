@@ -11,7 +11,6 @@ class HomePage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           const SliverAppBar(
-            //title: Text('Sliver App Bar'),
             pinned: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(

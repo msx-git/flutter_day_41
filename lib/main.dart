@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_day_41/views/screens/task.dart';
 
-import 'views/screens/home_screen.dart';
-
 void main() {
   runApp(const MyApp());
 }
@@ -19,4 +17,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

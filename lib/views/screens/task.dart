@@ -3,15 +3,47 @@ import 'package:flutter/material.dart';
 
 import '../widgets/persistent_header.dart';
 
-class Task extends StatelessWidget {
+class Task extends StatefulWidget {
   const Task({super.key});
 
   @override
+  State<Task> createState() => _TaskState();
+}
+
+class _TaskState extends State<Task> {
+  late final ScrollController scrollController = ScrollController();
+  final ValueNotifier<bool> showPopular = ValueNotifier<bool>(true);
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(popularListener);
+  }
+
+  void popularListener() {
+    double popularOffset = 1452;
+    if (scrollController.offset < popularOffset) {
+      showPopular.value = true;
+    } else {
+      showPopular.value = false;
+    }
+  }
+
+  @override
+  void dispose() {
+    showPopular.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // print(scrollController.offset);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: CustomScrollView(
+          controller: scrollController,
           slivers: [
             /// Appbar
             SliverAppBar(
@@ -56,32 +88,42 @@ class Task extends StatelessWidget {
             ),
 
             /// POPULAR label
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: SliverAppBarDelegate(
-                minHeight: 40,
-                maxHeight: 60,
-                child: Container(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Popular',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 20),
-                      ),
-                      Text(
-                        'See all',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black.withOpacity(0.5),
+            ValueListenableBuilder<bool>(
+              valueListenable: showPopular,
+              builder: (context, value, child) {
+                return SliverVisibility(
+                  visible: value,
+                  sliver: SliverPersistentHeader(
+                    pinned: true,
+                    delegate: SliverAppBarDelegate(
+                      minHeight: 40,
+                      maxHeight: 60,
+                      child: Container(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              showPopular.value ? 'Popular' : "",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(
+                              'See all',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
 
             /// GRID VIEW
