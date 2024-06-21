@@ -37,8 +37,8 @@ class Task extends StatelessWidget {
               ],
               pinned: true,
               centerTitle: true,
-              floating: true,
               flexibleSpace: FlexibleSpaceBar(
+                collapseMode: CollapseMode.parallax,
                 background: Container(
                     clipBehavior: Clip.hardEdge,
                     decoration: const BoxDecoration(
@@ -111,14 +111,14 @@ class Task extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "\$ 26.15",
-                            style: TextStyle(fontSize: 16.0),
+                            index.isEven ? "\$ 26.15" : "\$ 24.34",
+                            style: const TextStyle(fontSize: 16.0),
                           ),
-                          Icon(Icons.favorite_border)
+                          const Icon(Icons.favorite_border)
                         ],
                       ),
                       Text(
@@ -167,14 +167,52 @@ class Task extends StatelessWidget {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   return Container(
-                    width: double.infinity,
+                    clipBehavior: Clip.hardEdge,
                     margin: const EdgeInsets.symmetric(vertical: 10),
-                    height: 100,
-                    decoration: const BoxDecoration(),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [Text('data')],
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/image_3.jpg'),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 130,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.black,
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Positioned(
+                          top: 14,
+                          left: 20,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "Men's Fashion\nCollection",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                "Discount up to 60%",
+                                style: TextStyle(color: Colors.white70),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 },
